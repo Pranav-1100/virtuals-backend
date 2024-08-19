@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       mood: {
-        type: DataTypes.ENUM('ecstatic', 'happy', 'neutral', 'sad', 'angry'),
+        type: DataTypes.STRING,
         defaultValue: 'neutral'
       },
       health: {
@@ -46,12 +46,12 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 1
       },
       personality: {
-        type: DataTypes.JSON,
-        defaultValue: {}
+        type: DataTypes.TEXT,
+        defaultValue: '{}'
       },
       abilities: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-        defaultValue: []
+        type: DataTypes.TEXT,
+        defaultValue: '[]'
       },
       lastInteraction: {
         type: DataTypes.DATE,
@@ -62,6 +62,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     });
+  
+    Pet.associate = function(models) {
+      Pet.belongsTo(models.User, { foreignKey: 'userId' });
+    };
   
     return Pet;
   };

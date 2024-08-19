@@ -2,12 +2,12 @@ const { Sequelize } = require('sequelize');
 const path = require('path');
 
 const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: path.join(__dirname, '../../database.sqlite'),
-    logging: (msg) => console.log('Sequelize:', msg)
-  });
+  dialect: 'sqlite',
+  storage: path.join(__dirname, '../../database.sqlite'),
+  logging: (msg) => console.log('Sequelize:', msg)
+});
   
-  const initDatabase = async () => {
+const initDatabase = async () => {
     try {
       await sequelize.authenticate();
       console.log('Database connection has been established successfully.');
@@ -15,6 +15,7 @@ const sequelize = new Sequelize({
       // Drop existing tables
       await sequelize.query('DROP TABLE IF EXISTS Inventories');
       await sequelize.query('DROP TABLE IF EXISTS Items');
+      await sequelize.query('DROP TABLE IF EXISTS Pets');
       await sequelize.query('DROP TABLE IF EXISTS Users');
   
       // Create tables manually
@@ -33,11 +34,34 @@ const sequelize = new Sequelize({
       `);
   
       await sequelize.query(`
+        CREATE TABLE Pets (
+          id UUID PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          species VARCHAR(255) NOT NULL,
+          mood TEXT DEFAULT 'neutral',
+          health INTEGER DEFAULT 100,
+          hunger INTEGER DEFAULT 0,
+          energy INTEGER DEFAULT 100,
+          cleanliness INTEGER DEFAULT 100,
+          intelligence INTEGER DEFAULT 50,
+          experience INTEGER DEFAULT 0,
+          level INTEGER DEFAULT 1,
+          personality TEXT DEFAULT '{}',
+          abilities TEXT DEFAULT '[]',
+          lastInteraction DATETIME,
+          userId UUID NOT NULL,
+          createdAt DATETIME NOT NULL,
+          updatedAt DATETIME NOT NULL,
+          FOREIGN KEY (userId) REFERENCES Users(id)
+        )
+      `);
+  
+      await sequelize.query(`
         CREATE TABLE Items (
           id UUID PRIMARY KEY,
           name VARCHAR(255) NOT NULL,
           type TEXT NOT NULL,
-          effect JSON NOT NULL,
+          effect TEXT NOT NULL,
           rarity TEXT DEFAULT 'common',
           price INTEGER NOT NULL,
           createdAt DATETIME NOT NULL,

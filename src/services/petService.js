@@ -1,17 +1,13 @@
-const { Pet, Interaction } = require('../models');
-const { OpenAI } = require('openai');
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const { Pet, User } = require('../models');
 
 class PetService {
   static async createPet(userId, petData) {
-    return await Pet.create({ ...petData, userId });
-  }
-
-  static async getPet(userId) {
-    const pet = await Pet.findOne({ where: { userId } });
-    if (!pet) throw new Error('Pet not found');
-    return pet;
+    const user = await User.findByPk(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    console.log('About to create pet with:', { ...petData, userId: userId });
+    return Pet.create({ ...petData, userId: userId });
   }
 
   static async interact(userId, { action, itemId }) {

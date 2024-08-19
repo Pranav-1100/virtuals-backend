@@ -5,8 +5,8 @@ const basename = path.basename(__filename);
 const { sequelize } = require('../config/database');
 const db = {};
 
-fs
-  .readdirSync(__dirname)
+// Read all model files
+fs.readdirSync(__dirname)
   .filter(file => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
@@ -15,35 +15,36 @@ fs
     db[model.name] = model;
   });
 
-  Object.keys(db).forEach(modelName => {
-    if (db[modelName].associate) {
-      db[modelName].associate(db);
-    }
-  });
+// Define associations
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
-  db.Inventory.belongsTo(db.User, { foreignKey: 'userId' });
+// Define additional associations
+db.Pet.belongsTo(db.User);
+db.User.hasMany(db.Pet);
+
+db.Inventory.belongsTo(db.User, { foreignKey: 'userId' });
 db.Inventory.belongsTo(db.Item, { foreignKey: 'itemId' });
 db.User.hasMany(db.Inventory, { foreignKey: 'userId' });
 db.Item.hasMany(db.Inventory, { foreignKey: 'itemId' });
 
-
-
-// Define associations that can't be defined in the model files
-db.Pet.belongsTo(db.User);
-// db.Inventory.belongsTo(db.User);
-// db.Item.hasMany(db.Inventory);
-// db.Inventory.belongsTo(db.Item);
 db.Pet.hasMany(db.Playdate, { as: 'Playdates1', foreignKey: 'petId1' });
 db.Pet.hasMany(db.Playdate, { as: 'Playdates2', foreignKey: 'petId2' });
 db.Playdate.belongsTo(db.Pet, { as: 'Pet1', foreignKey: 'petId1' });
 db.Playdate.belongsTo(db.Pet, { as: 'Pet2', foreignKey: 'petId2' });
+
 db.Minigame.belongsTo(db.User);
 db.Pet.hasMany(db.Minigame);
 db.Minigame.belongsTo(db.Pet);
+
 db.UserAchievement.belongsTo(db.User);
 db.Achievement.hasMany(db.UserAchievement);
 db.UserAchievement.belongsTo(db.Achievement);
 
+// Add Sequelize instance to db object
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
