@@ -124,18 +124,57 @@ class MinigameService {
   }
 
   static generatePuzzleElements(intelligence) {
-    return Array(Math.floor(intelligence / 10) + 5).fill().map(() => ({
-      type: ['shape', 'color', 'number'][Math.floor(Math.random() * 3)],
-      value: Math.floor(Math.random() * 10)
-    }));
+    const elementCount = Math.floor(intelligence / 10) + 5;
+    const difficultyFactor = Math.floor(intelligence / 20);
+
+    return Array(elementCount).fill().map(() => {
+      const type = ['shape', 'color', 'number', 'letter'][Math.floor(Math.random() * 4)];
+      let value;
+
+      switch (type) {
+        case 'shape':
+          value = ['circle', 'square', 'triangle', 'star', 'hexagon', 'octagon'][Math.floor(Math.random() * (4 + difficultyFactor))];
+          break;
+        case 'color':
+          value = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'brown'][Math.floor(Math.random() * (5 + difficultyFactor))];
+          break;
+        case 'number':
+          value = Math.floor(Math.random() * (10 * (difficultyFactor + 1)));
+          break;
+        case 'letter':
+          value = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+          break;
+      }
+
+      return { type, value };
+    });
   }
 
   static async getMinigameHistory(userId) {
-    return await Minigame.findAll({
+    const minigames = await Minigame.findAll({
       where: { userId },
       order: [['createdAt', 'DESC']],
-      limit: 10
+      limit: 10,
+      attributes: ['id', 'gameType', 'createdAt', 'status', 'result'],
+      include: [
+        {
+          model: Pet,
+          attributes: ['id', 'name', 'species']
+        }
+      ]
     });
+
+    return minigames.map(minigame => ({
+      id: minigame.id,
+      gameType: minigame.gameType,
+      playedAt: minigame.createdAt,
+      status: minigame.status,
+      score: minigame.result?.score || 0,
+      petExperienceGained: minigame.result?.petExperience || 0,
+      userExperienceGained: minigame.result?.userExperience || 0,
+      petName: minigame.Pet.name,
+      petSpecies: minigame.Pet.species
+    }));
   }
 }
 
