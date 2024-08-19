@@ -5,31 +5,31 @@ const jwt = require('jsonwebtoken');
 module.exports = (sequelize) => {
   const User = sequelize.define('User', {
     id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
-      },
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          isEmail: true
-        }
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      role: {
-        type: DataTypes.ENUM('user', 'admin'),
-        defaultValue: 'user'
-      },
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    role: {
+      type: DataTypes.ENUM('user', 'admin'),
+      defaultValue: 'user'
+    },
     experience: {
       type: DataTypes.INTEGER,
       defaultValue: 0
@@ -47,20 +47,39 @@ module.exports = (sequelize) => {
   });
 
   User.prototype.generateAuthToken = function() {
-    const token = jwt.sign(
+    return jwt.sign(
       { 
         id: this.id,
         email: this.email,
-        role: this.role  // Include role in the token
+        role: this.role
       }, 
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
-    return token;
   };
 
   User.prototype.validatePassword = function(password) {
     return bcrypt.compare(password, this.password);
+  };
+
+  User.associate = function(models) {
+    User.belongsToMany(models.User, { 
+      through: models.Friendship,
+      as: 'Friends',
+      foreignKey: 'userId',
+      otherKey: 'friendId'
+    });
+    User.hasOne(models.Pet);
+    User.hasMany(models.Inventory);
+    User.hasMany(models.Minigame);
+    User.hasMany(models.UserAchievement);
+    User.hasMany(models.Inventory, {
+        foreignKey: {
+          name: 'userId',
+          type: DataTypes.UUID,
+          allowNull: false
+        }
+      });
   };
 
   return User;

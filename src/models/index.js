@@ -21,29 +21,18 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-// Define associations
-db.User.hasOne(db.Pet);
+// Define associations that can't be defined in the model files
 db.Pet.belongsTo(db.User);
-
-db.User.hasMany(db.Inventory);
-db.Inventory.belongsTo(db.User);
-
-db.Item.hasMany(db.Inventory);
-db.Inventory.belongsTo(db.Item);
-
-db.User.belongsToMany(db.User, { as: 'Friends', through: db.Friendship });
-
+// db.Inventory.belongsTo(db.User);
+// db.Item.hasMany(db.Inventory);
+// db.Inventory.belongsTo(db.Item);
 db.Pet.hasMany(db.Playdate, { as: 'Playdates1', foreignKey: 'petId1' });
 db.Pet.hasMany(db.Playdate, { as: 'Playdates2', foreignKey: 'petId2' });
 db.Playdate.belongsTo(db.Pet, { as: 'Pet1', foreignKey: 'petId1' });
 db.Playdate.belongsTo(db.Pet, { as: 'Pet2', foreignKey: 'petId2' });
-
-db.User.hasMany(db.Minigame);
 db.Minigame.belongsTo(db.User);
 db.Pet.hasMany(db.Minigame);
 db.Minigame.belongsTo(db.Pet);
-
-db.User.hasMany(db.UserAchievement);
 db.UserAchievement.belongsTo(db.User);
 db.Achievement.hasMany(db.UserAchievement);
 db.UserAchievement.belongsTo(db.Achievement);

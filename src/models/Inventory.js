@@ -5,19 +5,28 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
       },
-      userId: {
-        type: DataTypes.UUID,
-        allowNull: false
-      },
-      itemId: {
-        type: DataTypes.UUID,
-        allowNull: false
-      },
       quantity: {
         type: DataTypes.INTEGER,
         defaultValue: 1
       }
     });
+  
+    Inventory.associate = function(models) {
+      Inventory.belongsTo(models.User, {
+        foreignKey: {
+          name: 'userId',
+          type: DataTypes.UUID,
+          allowNull: false
+        }
+      });
+      Inventory.belongsTo(models.Item, {
+        foreignKey: {
+          name: 'itemId',
+          type: DataTypes.UUID,
+          allowNull: false
+        }
+      });
+    };
   
     return Inventory;
   };

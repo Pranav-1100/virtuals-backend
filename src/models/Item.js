@@ -1,14 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
     const Item = sequelize.define('Item', {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
+        id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true
+          },
+          name: {
+            type: DataTypes.STRING,
+            allowNull: false
+          },
       type: {
         type: DataTypes.ENUM('food', 'toy', 'accessory'),
         allowNull: false
@@ -26,6 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     });
-  
+    Item.associate = function(models) {
+        Item.hasMany(models.Inventory, {
+          foreignKey: {
+            name: 'itemId',
+            type: DataTypes.UUID,
+            allowNull: false
+          }
+        });
+      };
+      
     return Item;
   };

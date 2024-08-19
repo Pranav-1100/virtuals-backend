@@ -8,14 +8,14 @@ const sequelize = new Sequelize({
 });
 
 const initDatabase = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Database connection has been established successfully.');
-    await sequelize.sync({ alter: true });
-    console.log('Database synchronized');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-};
+    try {
+      await sequelize.authenticate();
+      console.log('Database connection has been established successfully.');
+      await sequelize.sync({ force: true }); // This will drop and recreate all tables
+      console.log('Database synchronized');
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
+  };
 
 module.exports = { sequelize, initDatabase };
