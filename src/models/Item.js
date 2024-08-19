@@ -27,14 +27,14 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
     Item.associate = function(models) {
-        Item.hasMany(models.Inventory, {
-          foreignKey: {
+        Item.hasMany(models.Inventory, { 
+          foreignKey: { 
             name: 'itemId',
-            type: DataTypes.UUID,
             allowNull: false
-          }
+          },
+          as: 'inventories'
         });
       };
-      
+
     return Item;
   };

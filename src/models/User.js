@@ -73,12 +73,12 @@ module.exports = (sequelize) => {
     User.hasMany(models.Inventory);
     User.hasMany(models.Minigame);
     User.hasMany(models.UserAchievement);
-    User.hasMany(models.Inventory, {
-        foreignKey: {
+    User.hasMany(models.Inventory, { 
+        foreignKey: { 
           name: 'userId',
-          type: DataTypes.UUID,
           allowNull: false
-        }
+        },
+        as: 'inventories'
       });
   };
 

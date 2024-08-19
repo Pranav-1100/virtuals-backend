@@ -15,11 +15,18 @@ fs
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+  Object.keys(db).forEach(modelName => {
+    if (db[modelName].associate) {
+      db[modelName].associate(db);
+    }
+  });
+
+  db.Inventory.belongsTo(db.User, { foreignKey: 'userId' });
+db.Inventory.belongsTo(db.Item, { foreignKey: 'itemId' });
+db.User.hasMany(db.Inventory, { foreignKey: 'userId' });
+db.Item.hasMany(db.Inventory, { foreignKey: 'itemId' });
+
+
 
 // Define associations that can't be defined in the model files
 db.Pet.belongsTo(db.User);
