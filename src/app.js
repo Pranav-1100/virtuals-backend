@@ -14,6 +14,7 @@ const achievementRoutes = require('./routes/achievement');
 const shopRoutes = require('./routes/shop');
 const socialRoutes = require('./routes/social');
 const minigameRoutes = require('./routes/minigame');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('/api/achievement', achievementRoutes);
 app.use('/api/shop', shopRoutes);
 app.use('/api/social', socialRoutes);
 app.use('/api/minigame', minigameRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {
