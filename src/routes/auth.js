@@ -2,24 +2,21 @@ const express = require('express');
 const { body } = require('express-validator');
 const AuthService = require('../services/authService');
 const validate = require('../middleware/validate');
+const auth = require('../middleware/auth');
+const adminAuth = require('../middleware/adminAuth');
 
 const router = express.Router();
 
-router.post('/register', 
-  validate([
-    body('username').isLength({ min: 3 }).trim().escape(),
-    body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 6 })
-  ]),
-  async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
-      const user = await AuthService.register(req.body);
-      res.status(201).json(user);
+      const { username, email, password, role } = req.body;
+      const user = await AuthService.register({ username, email, password, role });
+      const token = user.generateAuthToken();
+      res.status(201).json({ user: { id: user.id, username: user.username, email: user.email, role: user.role }, token });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
-  }
-);
+});
 
 router.post('/login', async (req, res) => {
   try {
@@ -28,6 +25,21 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
+});
+
+router.post('/create-admin', auth, adminAuth, async (req, res) => {
+    try {
+      const { username, email, password } = req.body;
+      const admin = await AuthService.register({ 
+        username, 
+        email, 
+        password,
+        role: 'admin'
+      });
+      res.status(201).json({ message: 'Admin created successfully', admin: { id: admin.id, username: admin.username, email: admin.email, role: admin.role } });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
 });
 
 module.exports = router;

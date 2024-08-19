@@ -13,6 +13,7 @@ const auth = async (req, res, next) => {
 
     req.token = token;
     req.user = user;
+    req.user.role = decoded.role;  // Add this line
     next();
   } catch (error) {
     res.status(401).send({ error: 'Please authenticate.' });

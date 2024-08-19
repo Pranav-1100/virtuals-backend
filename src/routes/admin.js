@@ -22,7 +22,7 @@ router.post('/achievements', auth, adminAuth, async (req, res) => {
 });
 
 // Get all achievements
-router.get('/achievements', auth, adminAuth, async (req, res) => {
+router.get('/achievements', auth, async (req, res) => {
   try {
     const achievements = await Achievement.findAll();
     res.json(achievements);

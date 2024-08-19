@@ -1,14 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
     const Friendship = sequelize.define('Friendship', {
-      userId: {
-        type: DataTypes.UUID,
-        allowNull: false
-      },
-      friendId: {
-        type: DataTypes.UUID,
-        allowNull: false
-      }
+    }, {
+      tableName: 'Friendships'
     });
+  
+    Friendship.associate = function(models) {
+      models.User.belongsToMany(models.User, { 
+        through: Friendship,
+        as: 'Friends',
+        foreignKey: 'userId',
+        otherKey: 'friendId'
+      });
+    };
   
     return Friendship;
   };

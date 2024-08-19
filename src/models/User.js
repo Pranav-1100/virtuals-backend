@@ -46,8 +46,17 @@ module.exports = (sequelize) => {
     }
   });
 
-  User.prototype.generateToken = function() {
-    return jwt.sign({ id: this.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  User.prototype.generateAuthToken = function() {
+    const token = jwt.sign(
+      { 
+        id: this.id,
+        email: this.email,
+        role: this.role  // Include role in the token
+      }, 
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    return token;
   };
 
   User.prototype.validatePassword = function(password) {
