@@ -152,6 +152,19 @@ const initDatabase = async () => {
         FOREIGN KEY (friendId) REFERENCES Users(id)
       )
     `);
+
+    await sequelize.query(`
+        CREATE TABLE Interactions (
+          id UUID PRIMARY KEY,
+          petId UUID NOT NULL,
+          type VARCHAR(255) NOT NULL,
+          details TEXT,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+          createdAt DATETIME NOT NULL,
+          updatedAt DATETIME NOT NULL,
+          FOREIGN KEY (petId) REFERENCES Pets(id)
+        )
+      `);
   
       console.log('Database tables created manually');
     } catch (error) {
