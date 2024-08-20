@@ -1,0 +1,716 @@
+{
+	"info": {
+		"_postman_id": "cc3115df-d30c-4043-8d3f-037efee28f16",
+		"name": "Virtual Pet API Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37370318"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@example.com\",\n    \"password\": \"adminpassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/create-admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"create-admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pet",
+			"item": [
+				{
+					"name": "Create Pet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Fluffy\",\n    \"species\": \"cat\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pet",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Interact with Pet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"feed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pet/interact",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pet",
+								"interact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pet Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/pet/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pet",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Get Inventory",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Use Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemId\": \"item-uuid-here\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/use",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"inventory",
+								"use"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shop",
+			"item": [
+				{
+					"name": "Get Shop Items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/shop",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"shop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemId\": \"item-uuid-here\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/shop/buy",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"shop",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Minigame",
+			"item": [
+				{
+					"name": "Start Minigame",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gameType\": \"puzzleSolver\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/minigame/start",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"minigame",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Minigame Result",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gameType\": \"puzzleSolver\",\n    \"result\": {\n        \"score\": 100,\n        \"timeSpent\": 30\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/minigame/submit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"minigame",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Social",
+			"item": [
+				{
+					"name": "Get Friends",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/social/friends",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"social",
+								"friends"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"friendId\": \"friend-uuid-here\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/social/friends/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"social",
+								"friends",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pet Playdates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/social/pet/playdates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"social",
+								"pet",
+								"playdates"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Achievement",
+			"item": [
+				{
+					"name": "Get User Achievements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/achievement",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"achievement"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Add Achievement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"First Pet\",\n    \"description\": \"Create your first pet\",\n    \"criteria\": {\"petCount\": 1},\n    \"reward\": {\"experience\": 100}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/achievements",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"achievements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Achievements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/achievements",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"achievements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Achievement",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Achievement\",\n    \"description\": \"Updated description\",\n    \"criteria\": {\"updatedCriteria\": true},\n    \"reward\": {\"experience\": 200}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/achievements/{{achievementId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"achievements",
+								"{{achievementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Achievement",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/achievements/{{achievementId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"achievements",
+								"{{achievementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJmM2IwNDVmLWNkZDgtNGQ2YS1hMzZjLTM2YjQwZjM1YmUxYyIsImVtYWlsIjoidGVzdEBleGFtcGxlMTExMTExMS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTcyNDEzOTc0MCwiZXhwIjoxNzI0MjI2MTQwfQ.ZCf6VkhyynXGkQp-6KE0kfEheqOG3Ol_UgSxSQyzg9g",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "authToken",
+			"value": "your-auth-token-here"
+		},
+		{
+			"key": "achievementId",
+			"value": "achievement-uuid-here"
+		}
+	]
+}
