@@ -37,12 +37,28 @@ db.Playdate.belongsTo(db.Pet, { as: 'Pet1', foreignKey: 'petId1' });
 db.Playdate.belongsTo(db.Pet, { as: 'Pet2', foreignKey: 'petId2' });
 
 db.Minigame.belongsTo(db.User);
+db.User.hasMany(db.Minigame);
 db.Pet.hasMany(db.Minigame);
 db.Minigame.belongsTo(db.Pet);
 
 db.UserAchievement.belongsTo(db.User);
 db.Achievement.hasMany(db.UserAchievement);
 db.UserAchievement.belongsTo(db.Achievement);
+
+// Add Friendship associations
+db.User.belongsToMany(db.User, { 
+  as: 'Friendships',
+  through: db.Friendship,
+  foreignKey: 'userId',
+  otherKey: 'friendId'
+});
+
+db.User.belongsToMany(db.User, {
+  as: 'FriendOf',
+  through: db.Friendship,
+  foreignKey: 'friendId',
+  otherKey: 'userId'
+});
 
 // Add Sequelize instance to db object
 db.sequelize = sequelize;

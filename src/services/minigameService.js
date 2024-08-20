@@ -2,20 +2,20 @@ const { Pet, User, Minigame } = require('../models');
 const PetService = require('./petService');
 
 class MinigameService {
-  static async startMinigame(userId, gameType) {
-    const pet = await PetService.getPet(userId);
-    const gameState = this.initializeGameState(gameType, pet);
-    
-    const minigame = await Minigame.create({
-      userId,
-      petId: pet.id,
-      gameType,
-      state: gameState,
-      status: 'in_progress'
-    });
-
-    return { gameId: minigame.id, gameState };
-  }
+    static async startMinigame(userId, gameType) {
+      const pet = await PetService.getPet(userId);
+      const gameState = this.initializeGameState(gameType, pet);
+      
+      const minigame = await Minigame.create({
+        userId,
+        petId: pet.id,
+        gameType,
+        state: gameState,
+        status: 'in_progress'
+      });
+  
+      return { gameId: minigame.id, gameState };
+    }
 
   static async submitMinigameResult(userId, gameId, result) {
     const minigame = await Minigame.findOne({ where: { id: gameId, userId } });

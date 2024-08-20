@@ -13,10 +13,15 @@ const initDatabase = async () => {
       console.log('Database connection has been established successfully.');
   
       // Drop existing tables
+      await sequelize.query('DROP TABLE IF EXISTS Minigames');
+      await sequelize.query('DROP TABLE IF EXISTS UserAchievements');
+      await sequelize.query('DROP TABLE IF EXISTS Achievements');
+      await sequelize.query('DROP TABLE IF EXISTS Playdates');
       await sequelize.query('DROP TABLE IF EXISTS Inventories');
       await sequelize.query('DROP TABLE IF EXISTS Items');
       await sequelize.query('DROP TABLE IF EXISTS Pets');
       await sequelize.query('DROP TABLE IF EXISTS Users');
+      await sequelize.query('DROP TABLE IF EXISTS Friendships');
   
       // Create tables manually
       await sequelize.query(`
@@ -82,11 +87,77 @@ const initDatabase = async () => {
         )
       `);
   
+      await sequelize.query(`
+        CREATE TABLE Playdates (
+          id UUID PRIMARY KEY,
+          petId1 UUID NOT NULL,
+          petId2 UUID NOT NULL,
+          status TEXT DEFAULT 'pending',
+          scheduledTime DATETIME,
+          createdAt DATETIME NOT NULL,
+          updatedAt DATETIME NOT NULL,
+          FOREIGN KEY (petId1) REFERENCES Pets(id),
+          FOREIGN KEY (petId2) REFERENCES Pets(id)
+        )
+      `);
+  
+      await sequelize.query(`
+        CREATE TABLE Achievements (
+          id UUID PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          description TEXT,
+          criteria TEXT,
+          createdAt DATETIME NOT NULL,
+          updatedAt DATETIME NOT NULL
+        )
+      `);
+  
+      await sequelize.query(`
+        CREATE TABLE UserAchievements (
+          id UUID PRIMARY KEY,
+          userId UUID NOT NULL,
+          achievementId UUID NOT NULL,
+          unlockedAt DATETIME NOT NULL,
+          createdAt DATETIME NOT NULL,
+          updatedAt DATETIME NOT NULL,
+          FOREIGN KEY (userId) REFERENCES Users(id),
+          FOREIGN KEY (achievementId) REFERENCES Achievements(id)
+        )
+      `);
+  
+      await sequelize.query(`
+        CREATE TABLE Minigames (
+          id UUID PRIMARY KEY,
+          userId UUID NOT NULL,
+          petId UUID NOT NULL,
+          gameType VARCHAR(255) NOT NULL,
+          state TEXT NOT NULL,
+          status VARCHAR(20) DEFAULT 'in_progress',
+          result TEXT,
+          createdAt DATETIME NOT NULL,
+          updatedAt DATETIME NOT NULL,
+          FOREIGN KEY (userId) REFERENCES Users(id),
+          FOREIGN KEY (petId) REFERENCES Pets(id)
+        )
+      `);
+
+      await sequelize.query(`
+      CREATE TABLE Friendships (
+        id UUID PRIMARY KEY,
+        userId UUID NOT NULL,
+        friendId UUID NOT NULL,
+        createdAt DATETIME NOT NULL,
+        updatedAt DATETIME NOT NULL,
+        FOREIGN KEY (userId) REFERENCES Users(id),
+        FOREIGN KEY (friendId) REFERENCES Users(id)
+      )
+    `);
+  
       console.log('Database tables created manually');
     } catch (error) {
       console.error('Unable to connect to the database:', error);
       process.exit(1);
     }
   };
-
-module.exports = { sequelize, initDatabase };
+  
+  module.exports = { sequelize, initDatabase };
